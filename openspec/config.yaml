@@ -1,0 +1,19 @@
+schema: spec-driven
+context: |
+  Product: Offline macOS recovery tool for repairing user-owned LINE data in encrypted Finder backups.
+  Architecture: Native SwiftUI macOS shell with an in-process Rust static-library core.
+  Safety: Original backups are immutable; every mutation targets a verified clone. The app never automates iPhone restore.
+  Privacy: Backup passwords, encryption keys, and chat contents never leave the Mac and must not appear in logs.
+  Distribution: Developer ID signed and notarized outside the Mac App Store for the initial release.
+  Reference evidence: outputs/LINE_iPhone_聊天紀錄修復完整技術報告.md documents the proven manual recovery.
+rules:
+  proposal:
+    - State the MVP boundary and explicitly exclude automated device restore.
+  specs:
+    - Include failure and safety scenarios for every mutating capability.
+    - Use externally observable behavior and avoid implementation-specific crate or class names.
+  design:
+    - Include data flow, trust boundaries, rollback behavior, and alternatives considered.
+  tasks:
+    - Every task must include an explicit verification method.
+    - Land tests and supporting documentation in the same task group as the behavior they cover.

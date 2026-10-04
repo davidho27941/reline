@@ -1,0 +1,39 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/recovery-core",
+    "crates/recovery-ffi",
+    "crates/recovery-cli",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+rust-version = "1.85"
+
+[workspace.dependencies]
+aes = "0.9"
+aes-kw = "0.3"
+cbc = { version = "0.2", features = ["alloc", "block-padding"] }
+cipher = { version = "0.5", features = ["alloc", "block-padding"] }
+pbkdf2 = "0.13"
+hmac = "0.13"
+sha1 = "0.11"
+sha2 = "0.11"
+plist = "1.10"
+rusqlite = { version = "0.40", features = ["bundled"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+zeroize = { version = "1", features = ["derive"] }
+hex = "0.4"
+thiserror = "2"
+libc = "0.2"
+rand = "0.10"
+tempfile = "3"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+panic = "abort"
+strip = "debuginfo"

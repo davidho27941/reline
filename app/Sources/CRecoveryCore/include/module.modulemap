@@ -1,0 +1,4 @@
+module CRecoveryCore {
+    header "recovery_ffi.h"
+    export *
+}

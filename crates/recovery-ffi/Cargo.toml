@@ -1,0 +1,19 @@
+[package]
+name = "recovery-ffi"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+description = "C ABI for the recovery core, consumed by the SwiftUI shell."
+
+[lib]
+name = "recovery_ffi"
+crate-type = ["staticlib", "rlib"]
+
+[dependencies]
+recovery-core = { path = "../recovery-core", features = ["fixtures"] }
+serde_json.workspace = true
+libc.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true

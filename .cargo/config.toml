@@ -1,0 +1,4 @@
+[env]
+# Match the Swift package's minimum deployment target so the static library links without
+# "built for newer macOS" warnings.
+MACOSX_DEPLOYMENT_TARGET = "13.0"

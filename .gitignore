@@ -1,0 +1,12 @@
+/target
+/app/.build
+/app/.swiftpm
+/fixtures/generated
+*.sqlite-journal
+.DS_Store
+/dist
+/target
+app/Reline.xcodeproj
+app/.build
+# Personal investigation report with device identifiers; never published
+/outputs

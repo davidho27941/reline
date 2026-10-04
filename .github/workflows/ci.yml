@@ -1,0 +1,49 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  rust:
+    strategy:
+      matrix:
+        os: [macos-14, macos-15]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with: { components: "clippy, rustfmt", targets: "aarch64-apple-darwin" }
+      - run: cargo fmt --all -- --check
+      - run: cargo clippy --workspace --all-features --all-targets -- -D warnings
+      - run: cargo test --workspace --all-features
+      - run: python3 scripts/gen-licenses.py --check
+      - run: scripts/build-universal.sh
+  sanitizer:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+        with: { components: "rust-src" }
+      - run: rustup toolchain install stable
+      - run: scripts/check.sh --sanitize
+  swift:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo build --release -p recovery-ffi
+      - run: cd app && swift build
+      - run: scripts/swift-test.sh
+  reference:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: astral-sh/setup-uv@v5
+      - run: cargo run -q -p recovery-cli -- /tmp/ws '{"op":"generate_fixture","output_dir":"/tmp/fx","spec":{"line":{"message_count":1500}}}'
+      - run: cd scripts && uv run --with iphone_backup_decrypt==0.11.2 --with pycryptodome python verify_fixture_reference.py /tmp/fx
+  package:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: scripts/package-app.sh --adhoc
+      - run: codesign --verify --deep --strict --verbose=2 dist/Reline.app
+      - run: test -x dist/Reline.app/Contents/MacOS/Reline

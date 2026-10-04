@@ -1,0 +1,93 @@
+name: Reline
+options:
+  bundleIdPrefix: io.github.davidho27941.reline
+  deploymentTarget:
+    macOS: "13.0"
+  generateEmptyDirectories: true
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    CODE_SIGN_STYLE: Manual
+    CODE_SIGN_IDENTITY: "-"
+    DEVELOPMENT_TEAM: ""
+    MACOSX_DEPLOYMENT_TARGET: "13.0"
+    ENABLE_HARDENED_RUNTIME: YES
+    DEAD_CODE_STRIPPING: YES
+targets:
+  RecoveryKit:
+    type: framework
+    platform: macOS
+    postBuildScripts:
+      - name: Strip provenance xattrs before codesign
+        script: 'xattr -cr "$SRCROOT/Info.plist" "$SRCROOT/Reline.entitlements" "$TARGET_BUILD_DIR/$WRAPPER_NAME" 2>/dev/null || true'
+        basedOnDependencyAnalysis: false
+    sources:
+      - path: Sources/RecoveryKit
+      - path: Sources/CRecoveryCore
+        excludes: ["include/module.modulemap"]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.davidho27941.reline.kit
+        PRODUCT_NAME: RecoveryKit
+        SWIFT_INCLUDE_PATHS: "$(SRCROOT)/Sources/CRecoveryCore/include"
+        HEADER_SEARCH_PATHS: "$(SRCROOT)/Sources/CRecoveryCore/include"
+        LIBRARY_SEARCH_PATHS: "$(SRCROOT)/../target/release"
+        OTHER_LDFLAGS: "-lrecovery_ffi"
+        GENERATE_INFOPLIST_FILE: YES
+        DEFINES_MODULE: YES
+        SKIP_INSTALL: YES
+  Reline:
+    type: application
+    platform: macOS
+    postBuildScripts:
+      - name: Strip provenance xattrs before codesign
+        script: 'xattr -cr "$SRCROOT/Info.plist" "$SRCROOT/Reline.entitlements" "$TARGET_BUILD_DIR/$WRAPPER_NAME" 2>/dev/null || true'
+        basedOnDependencyAnalysis: false
+    sources:
+      - path: Sources/RelineApp
+        excludes: ["Resources/**"]
+      - path: Sources/RelineApp/Resources
+        buildPhase: resources
+    dependencies:
+      - target: RecoveryKit
+        embed: true
+    entitlements:
+      path: Reline.entitlements
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.davidho27941.reline
+        PRODUCT_NAME: Reline
+        GENERATE_INFOPLIST_FILE: NO
+        # Hand-written; xcodegen's `info:` key would regenerate it on every run (see package-app.sh).
+        INFOPLIST_FILE: Info.plist
+        LD_RUNPATH_SEARCH_PATHS: "@executable_path/../Frameworks"
+  RelineUITests:
+    type: bundle.ui-testing
+    platform: macOS
+    postBuildScripts:
+      - name: Strip provenance xattrs before codesign
+        script: 'xattr -cr "$SRCROOT/Info.plist" "$SRCROOT/Reline.entitlements" "$TARGET_BUILD_DIR/$WRAPPER_NAME" 2>/dev/null || true'
+        basedOnDependencyAnalysis: false
+    sources:
+      - path: Tests/UITests
+    dependencies:
+      - target: Reline
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.davidho27941.reline.uitests
+        TEST_TARGET_NAME: Reline
+        GENERATE_INFOPLIST_FILE: YES
+        ENABLE_HARDENED_RUNTIME: NO
+        OTHER_CODE_SIGN_FLAGS: ""
+schemes:
+  Reline:
+    build:
+      targets:
+        Reline: all
+        RelineUITests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - RelineUITests

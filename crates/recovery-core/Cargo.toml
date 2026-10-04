@@ -1,0 +1,39 @@
+[package]
+name = "recovery-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+description = "Deterministic LINE backup recovery engine: intake, analysis, transactional repair, payload re-encryption, verification."
+
+[lib]
+name = "recovery_core"
+path = "src/lib.rs"
+
+[features]
+default = []
+# Synthetic encrypted-backup and LINE database fixture generation. Used by tests and the CLI.
+fixtures = ["rand"]
+
+[dependencies]
+aes.workspace = true
+aes-kw.workspace = true
+cbc.workspace = true
+cipher.workspace = true
+pbkdf2.workspace = true
+hmac.workspace = true
+sha1.workspace = true
+sha2.workspace = true
+plist.workspace = true
+rusqlite.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+zeroize.workspace = true
+hex.workspace = true
+thiserror.workspace = true
+libc.workspace = true
+rand = { workspace = true, optional = true }
+
+[dev-dependencies]
+tempfile.workspace = true
+rand.workspace = true
