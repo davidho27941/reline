@@ -43,6 +43,6 @@ a checkpoint backup after a successful restore.
 
 ## Incident response
 
-Security or data-safety issues: open a GitHub Issue on the project repository (repository URL to be added when the repository is published; until then contact the maintainer directly). Include the
-report JSON (redacted) and the core version. Do not send backups, passwords or plaintext
+Security or data-safety issues: open a GitHub Issue at
+<https://github.com/davidho27941/reline/issues>. Include the report JSON (redacted) and the core version. Do not send backups, passwords or plaintext
 databases.

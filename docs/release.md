@@ -14,7 +14,7 @@ Requirements: macOS 13 or newer on Apple Silicon, Xcode Command Line Tools
 (`xcode-select --install`) or Xcode, and a Rust toolchain (https://rustup.rs). Then:
 
 ```
-git clone <repository>
+git clone https://github.com/davidho27941/reline.git
 cd reline
 scripts/package-app.sh --adhoc      # builds the Rust core and the SwiftUI app, writes dist/Reline.app
 open dist/Reline.app
