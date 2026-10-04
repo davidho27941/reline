@@ -51,8 +51,13 @@ targets:
     dependencies:
       - target: RecoveryKit
         embed: true
+    # xcodegen rewrites this file on every `generate`; without `properties` it writes an empty
+    # dict and silently drops the two file-access entitlements (task 9.1).
     entitlements:
       path: Reline.entitlements
+      properties:
+        com.apple.security.files.user-selected.read-write: true
+        com.apple.security.files.bookmarks.app-scope: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: io.github.davidho27941.reline
