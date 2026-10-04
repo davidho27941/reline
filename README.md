@@ -82,6 +82,39 @@ Full walkthrough: `docs/user-workflow.md`.
 - No warranty. Keep the original backup until LINE on the restored phone has been checked and a
   new checkpoint backup exists. Details: `docs/security-review.md`, `docs/repair-invariants.md`.
 
+## Disclaimer
+
+This software is provided "as is", without warranty of any kind, express or implied, including
+but not limited to the warranties of merchantability, fitness for a particular purpose and
+non-infringement. In no event shall the authors be liable for any claim, damages or other
+liability, including loss of data, arising from or in connection with the software or its use.
+
+- Reline is an independent project. It is not affiliated with, endorsed by or supported by LINE
+  Corporation, LY Corporation or Apple Inc. "LINE" and "iPhone" are trademarks of their
+  respective owners and are used here only to describe what the software works with.
+- The repair rule was derived from a single real case. It may not apply to your backups, and
+  the tool may decline to repair anything. A successful run on the tool's side does not
+  guarantee that LINE on the restored phone will show the recovered messages.
+- Restoring a backup to an iPhone replaces the data on that device. You alone decide whether to
+  restore, and you do so at your own risk. Keep the original backup, and a backup of the current
+  phone, until you have confirmed the result and made a new checkpoint backup.
+- Use this tool only on backups of your own device and data, in accordance with the applicable
+  law and the terms of service that bind you.
+
+### 免責聲明（繁體中文）
+
+本軟體依「現狀」提供，不附帶任何形式的明示或默示擔保，包括但不限於適售性、特定用途適用性及
+不侵權之擔保。無論任何情況，作者均不對因本軟體或其使用而產生的任何索賠、損害或其他責任
+（包括資料遺失）負責。
+
+- Reline 是獨立專案，與 LINE Corporation、LY Corporation 或 Apple Inc. 無任何關聯，亦未獲其
+  授權、背書或支援。「LINE」與「iPhone」為各自所有權人的商標，此處僅用於描述本軟體處理的對象。
+- 修復規則來自單一真實案例，不一定適用於你的備份，工具也可能判定沒有任何可修復的項目。工具
+  端的成功執行，並不保證還原後手機上的 LINE 會顯示修復的訊息。
+- 將備份還原到 iPhone 會覆蓋該裝置上的資料。是否還原由你自行決定並自行承擔風險。在確認結果
+  並建立新的檢查點備份之前，請保留原始備份以及目前手機的備份。
+- 請僅在你本人的裝置與資料的備份上使用本工具，並遵守適用的法律與對你有約束力的服務條款。
+
 ## Development
 
 ```
