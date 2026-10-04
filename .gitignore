@@ -10,3 +10,5 @@ app/Reline.xcodeproj
 app/.build
 # Personal investigation report with device identifiers; never published
 /outputs
+# OpenSpec specification and task log are kept locally only
+/openspec

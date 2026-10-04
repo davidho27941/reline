@@ -91,7 +91,7 @@ scripts/scale-test.sh       # 400k-message timing run on a synthetic fixture
 ```
 
 Layout: `crates/recovery-core` (engine), `crates/recovery-ffi` (C ABI), `crates/recovery-cli`,
-`app/` (SwiftUI shell and RecoveryKit), `docs/`, `openspec/` (specification and task log).
+`app/` (SwiftUI shell and RecoveryKit), `docs/`.
 
 ## License
 
