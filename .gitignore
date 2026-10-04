@@ -12,3 +12,5 @@ app/.build
 /outputs
 # OpenSpec specification and task log are kept locally only
 /openspec
+# Claude Code skills/commands for the OpenSpec workflow are kept locally only
+/.claude
