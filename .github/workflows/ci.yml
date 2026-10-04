@@ -19,9 +19,11 @@ jobs:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@nightly
-        with: { components: "rust-src" }
-      - run: rustup toolchain install stable
+      - uses: dtolnay/rust-toolchain@stable
+        with: { components: "clippy, rustfmt" }
+      # nightly is only used for `cargo +nightly test -Zbuild-std`; stable stays the default so
+      # fmt/clippy/test run on it.
+      - run: rustup toolchain install nightly --profile minimal --component rust-src
       - run: scripts/check.sh --sanitize
   swift:
     runs-on: macos-15
@@ -47,3 +49,20 @@ jobs:
       - run: scripts/package-app.sh --adhoc
       - run: codesign --verify --deep --strict --verbose=2 dist/Reline.app
       - run: test -x dist/Reline.app/Contents/MacOS/Reline
+  # Task 9.3: XCUITest suite on a clean runner (needs full Xcode; the runner has a GUI session).
+  ui-test:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: brew install xcodegen
+      - run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+      - run: scripts/ui-test.sh
+  # Task 9.3: CLI chain on a synthetic fixture sized like the proven case, with timings.
+  chain:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: scripts/scale-test.sh /tmp/reline-scale 400000 | tee scale.txt
+      - run: 'grep -q "updates: 227 | gates: True" scale.txt'

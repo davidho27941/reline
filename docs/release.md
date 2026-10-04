@@ -77,7 +77,7 @@ Requires `NOTARY_PROFILE` (a `notarytool store-credentials` profile).
 
 ## Release evidence (task 9.3)
 
-CI (`.github/workflows/ci.yml`) runs the Rust suite, the Swift suite, the fixture reference check and the app packaging on clean GitHub macOS 14/15 runners; those logs are part of the evidence.
+CI (`.github/workflows/ci.yml`) runs the Rust suite (macOS 14 and 15), the AddressSanitizer run, the Swift suite, the fixture reference check, the app packaging, the XCUITest suite and the timed CLI chain on a 400k-message fixture, all on clean GitHub macOS runners; those logs are part of the evidence (task 9.3).
 
 For each supported macOS version (Apple Silicon only) record in `docs/release-evidence/<version>.md`:
 

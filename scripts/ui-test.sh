@@ -44,6 +44,9 @@ sign "$P/RelineUITests-Runner.app"
 xattr -cr "$P"
 codesign --verify --deep --strict "$P/Reline.app"
 XCTESTRUN=$(ls "$DD"/Build/Products/Reline_*.xctestrun | head -1)
+LOG="${TMPDIR}/RelineUITests-$(date +%s).log"
 xcodebuild test-without-building -xctestrun "$XCTESTRUN" -destination 'platform=macOS' \
-  -derivedDataPath "$DD" -resultBundlePath "${TMPDIR}/RelineUITests-$(date +%s).xcresult" 2>&1 \
-  | grep -E "Test Case .* (passed|failed)|Executed|TEST (SUCCEEDED|FAILED)|error:|XCTAssert" || true
+  -derivedDataPath "$DD" -resultBundlePath "${LOG%.log}.xcresult" >"$LOG" 2>&1 || true
+grep -E "Test Case .* (passed|failed)|Executed|TEST (SUCCEEDED|FAILED)|error:|XCTAssert" "$LOG" || true
+# xcodebuild's exit status is unreliable for test-without-building; trust the summary line.
+grep -q "TEST EXECUTE SUCCEEDED" "$LOG" || { echo "UI tests did not succeed; full log: $LOG" >&2; exit 1; }

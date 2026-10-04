@@ -31,7 +31,12 @@ case "${1:-}" in
     # Developer ID. Gatekeeper will not accept an ad-hoc signature; that is expected.
     codesign --force --options runtime --entitlements app/Reline.entitlements --sign - "$APP"
     codesign --verify --deep --strict --verbose=2 "$APP"
-    codesign -d --entitlements - --xml "$APP" 2>/dev/null | plutil -p - | grep -E "user-selected|bookmarks"
+    ENT=$(codesign -d --entitlements - --xml "$APP" 2>/dev/null | plutil -p -)
+    for key in com.apple.security.files.user-selected.read-write com.apple.security.files.bookmarks.app-scope; do
+      grep -q "$key" <<<"$ENT" || { echo "entitlement $key missing from signed bundle" >&2; exit 1; }
+    done
+    [[ $(grep -c '=> 1' <<<"$ENT") -eq 2 ]] || { echo "unexpected entitlements:" >&2; echo "$ENT" >&2; exit 1; }
+    echo "$ENT"
     codesign -dvv "$APP" 2>&1 | grep -E "^(Identifier|Format|CodeDirectory|flags)" || codesign -dvv "$APP" 2>&1 | grep -iE "runtime|flags"
     ;;
 esac
